@@ -1,7 +1,4 @@
 # SDAUtilities
-A cross-language collection of practical tools, helpers, and references developed by the Silicon Dream Artists collective. Designed to support creative automation, metadata workflows, queue-based systems, and interaction handling — within and beyond the SovereignTrust protocol.
-
-# SDAUtilities
 
 🧰 A cross-language toolbox of open-source helpers, scripts, and references from the Silicon Dream Artists collective.  
 These utilities support creative automation, trustless coordination, queue systems, metadata workflows, and more — usable within or beyond the SovereignTrust protocol.
