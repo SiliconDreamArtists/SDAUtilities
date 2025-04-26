@@ -1,11 +1,12 @@
 function Invoke-GenerateModuleFile {
     param (
         [Parameter(Mandatory = $true)]
-        [string]$OutputFile
+        [string]$OutputFile,
+        [string]$Root
     )
 
-    $scriptRoot = "$PSScriptRoot"
-    $ps1Files = Get-ChildItem -Path $scriptRoot -Recurse -Filter *.ps1 | Where-Object { $_.Name -ne (Split-Path $scriptRoot -Leaf) }
+    $scriptRoot = $Root #"$PSScriptRoot"
+    $ps1Files = Get-ChildItem -Path $scriptRoot -Recurse -Filter *.ps1 | Where-Object { $_.Name -ne (Split-Path $scriptRoot -Leaf) -eq $OutputFile -and $_.Name -ne 'Invoke-GenerateModuleFile.ps1' }
 
     $loadLines = @()
     $exportFunctions = @()

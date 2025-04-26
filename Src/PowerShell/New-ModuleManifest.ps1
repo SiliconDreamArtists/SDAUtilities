@@ -15,6 +15,7 @@ New-ModuleManifest -Path ./SDAUtilities.psd1 `
   -CompatiblePSEditions 'Core' `
   -PowerShellVersion '5.1'
 
-  Invoke-GenerateModuleFile -OutputFile 'SDAUtilities.psm1'
+  Invoke-GenerateModuleFile -OutputFile 'SDAUtilities.psm1' -Root $PSScriptRoot
+  
 
   
