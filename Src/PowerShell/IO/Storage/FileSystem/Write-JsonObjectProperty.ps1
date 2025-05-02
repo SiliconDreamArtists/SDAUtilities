@@ -1,13 +1,13 @@
 function Write-JsonObjectProperty {
     param (
         [string]$JsonFilePath,
-        [string]$PropertyName,  # e.g., "Counts.GroupEntries"
+        [string]$Path,  # e.g., "Counts.GroupEntries"
         [object]$PropertyValue
     )
 
     # Determine write target
     $writePath = $JsonFilePath
-    if ($PropertyName -like 'Working*') {
+    if ($Path -like 'Working*') {
         $basePath = [System.IO.Path]::GetFileNameWithoutExtension($JsonFilePath)
         $dirPath = [System.IO.Path]::GetDirectoryName($JsonFilePath)
         $writePath = Join-Path $dirPath ($basePath + '_Working.json')
@@ -37,7 +37,7 @@ function Write-JsonObjectProperty {
     }
 
     # Navigate and set nested property
-    $parts = $PropertyName -split '\.'
+    $parts = $Path -split '\.'
     $ref = $json
     for ($i = 0; $i -lt $parts.Length - 1; $i++) {
         $part = $parts[$i]

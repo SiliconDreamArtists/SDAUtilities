@@ -1,13 +1,13 @@
 function Write-JsonProperty {
     param (
         [string]$JsonFilePath,
-        [string]$PropertyName,  # e.g., "Counts.GroupEntries"
+        [string]$Path,  # e.g., "Counts.GroupEntries"
         [object]$PropertyValue
     )
 
     $writePath = $JsonFilePath
 
-    if ($PropertyName -like 'Working*') {
+    if ($Path -like 'Working*') {
         $basePath = [System.IO.Path]::GetFileNameWithoutExtension($JsonFilePath)
         $dirPath = [System.IO.Path]::GetDirectoryName($JsonFilePath)
         $writePath = Join-Path $dirPath ($basePath + '_Working.json')
@@ -30,7 +30,7 @@ function Write-JsonProperty {
     
 #    $json = Get-Content -Raw -Path $writePath | ConvertFrom-Json -Depth 20
 
-    $parts = $PropertyName -split '\.'
+    $parts = $Path -split '\.'
     $ref = $json
     for ($i = 0; $i -lt $parts.Length - 1; $i++) {
         $part = $parts[$i]

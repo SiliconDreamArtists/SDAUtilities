@@ -25,7 +25,7 @@ function Invoke-ReplaceTemplateFromFileWithPlaceholdersFromObject {
         $promptObject = $innerXml | ConvertFrom-Json -Depth 20
         
         if ($null -ne $promptObject.Answers) {
-            Add-JsonPropertyValue -Object $result -PropertyName "Answers" -Value $promptObject.Answers
+            Add-PathToDictionary -Dictionary $result -Path "Answers" -Value $promptObject.Answers
         }
 
         if (-not [string]::IsNullOrWhiteSpace($promptObject.PromptTemplatePath)) {
@@ -57,6 +57,6 @@ function Invoke-ReplaceTemplateFromFileWithPlaceholdersFromObject {
         $value = $templateContent
     }
 
-    Add-JsonPropertyValue -Object $result -PropertyName "Content" -Value $value
+    Add-PathToDictionary -Dictionary $result -Path "Content" -Value $value
     return $result
 }

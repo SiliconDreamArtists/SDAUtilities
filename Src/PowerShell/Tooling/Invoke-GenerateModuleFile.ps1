@@ -5,29 +5,36 @@ function Invoke-GenerateModuleFile {
         [string]$Root
     )
 
-    $scriptRoot = $Root #"$PSScriptRoot"
-    $ps1Files = Get-ChildItem -Path $scriptRoot -Recurse -Filter *.ps1 | Where-Object { $_.Name -ne (Split-Path $scriptRoot -Leaf) -eq $OutputFile -and $_.Name -ne 'Invoke-GenerateModuleFile.ps1' }
+    $scriptRoot = $Root
+    $skipFiles = @(
+        "New-ModuleManifest.ps1"
+    )
+
+    $ps1Files = Get-ChildItem -Path $scriptRoot -Recurse -Filter *.ps1 | Where-Dictionary {
+        ($_.Name -notin $skipFiles) -and
+        ($_.Name -ne $OutputFile)
+    }
 
     $loadLines = @()
     $exportFunctions = @()
 
     foreach ($file in $ps1Files) {
-        # Skip the output file itself if somehow caught
         $relativePath = $file.FullName.Replace($scriptRoot, '$PSScriptRoot').Replace('\\', '/').Replace('\', '/')
         $loadLines += '. "' + $relativePath + '"'
 
-        # Guess the function name from the file name
-        $functionName = [System.IO.Path]::GetFileNameWithoutExtension($file.Name)
-        $exportFunctions += $functionName
+        if ($file.FullName -notmatch '\\classes\\' -and $file.FullName -notmatch '/classes/') {
+            # Only export function if NOT inside /classes/
+            $functionName = [System.IO.Path]::GetFileNameWithoutExtension($file.Name)
+            $exportFunctions += $functionName
+        }
     }
 
     # Build content
     $content = @()
-
-    $content += "# Load all utility functions"
+    $content += "# Load all files (functions + classes)"
     $content += $loadLines
     $content += ""
-    $content += "# Export utility functions"
+    $content += "# Export public utility functions"
     foreach ($func in $exportFunctions) {
         $content += "Export-ModuleMember -Function $func"
     }
@@ -37,4 +44,3 @@ function Invoke-GenerateModuleFile {
 
     Write-Host "✅ Generated module file: $OutputFile" -ForegroundColor Green
 }
-

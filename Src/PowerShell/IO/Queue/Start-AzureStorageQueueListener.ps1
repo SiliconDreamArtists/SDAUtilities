@@ -68,7 +68,7 @@ function Start-AzureStorageQueueListener {
                 $token = $signal.Result.token      # from payload
                 $appId = $signal.Result.application_id          # from payload
                 $reply = @{
-                    content = "✅ Loaded "#$($nodes[-1].Name)"
+                    content = "✅ Loaded $($nodes[-1].Name)"
                 }
 
                 $headers = @{ "Content-Type" = "application/json" }
@@ -94,7 +94,7 @@ function Start-AzureStorageQueueListener {
                 
                 
                     Invoke-SelectFilteredCommandStep `
-                        -Step $null `
+                        -Phase $null `
                         -AutomationLevel 0 `
                         -Item $nodes[-1] `
                         -Environment $Environment `

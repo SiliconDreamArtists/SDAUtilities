@@ -14,9 +14,9 @@ function Resolve-RecursiveTemplateStep {
             throw "[agent] Template recursion exceeded max depth ($maxDepth)."
         }
 
-        $templateType  = Get-DictionaryValue -Object $current -Key "TemplateType"
-        $templatePath  = Get-DictionaryValue -Object $current -Key "TemplatePath"
-        $templateXPath = Get-DictionaryValue -Object $current -Key "TemplateXPath"
+        $templateType  = Get-DictionaryValue -Dictionary $current -Key "TemplateType"
+        $templatePath  = Get-DictionaryValue -Dictionary $current -Key "TemplatePath"
+        $templateXPath = Get-DictionaryValue -Dictionary $current -Key "TemplateXPath"
 
         # No path? Use the inline Template value
         if ([string]::IsNullOrWhiteSpace($templatePath)) {
@@ -40,7 +40,7 @@ function Resolve-RecursiveTemplateStep {
                 throw "[agent] Failed to parse JSON content from $templatePath ($templateXPath)"
             }
 
-            $nextTemplatePath = Get-DictionaryValue -Object $json -Key "TemplatePath"
+            $nextTemplatePath = Get-DictionaryValue -Dictionary $json -Key "TemplatePath"
             if ($null -ne $nextTemplatePath) {
                 $current = $json
                 continue
@@ -57,10 +57,10 @@ function Resolve-RecursiveTemplateStep {
                 -VirtualPath $templatePath `
                 -XPath $templateXPath
 
-            Set-DictionaryValue -Object ([ref]$current) -Key "Template" -Value $resolved
-            Set-DictionaryValue -Object ([ref]$current) -Key "TemplatePath" -Value ""
-            Set-DictionaryValue -Object ([ref]$current) -Key "TemplateXPath" -Value ""
-            Set-DictionaryValue -Object ([ref]$current) -Key "TemplateType" -Value "String"
+            Set-DictionaryValue -Dictionary ([ref]$current) -Key "Template" -Value $resolved
+            Set-DictionaryValue -Dictionary ([ref]$current) -Key "TemplatePath" -Value ""
+            Set-DictionaryValue -Dictionary ([ref]$current) -Key "TemplateXPath" -Value ""
+            Set-DictionaryValue -Dictionary ([ref]$current) -Key "TemplateType" -Value "String"
 
             return $current
         }
