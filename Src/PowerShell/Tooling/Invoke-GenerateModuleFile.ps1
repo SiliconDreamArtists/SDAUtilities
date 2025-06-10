@@ -10,7 +10,7 @@ function Invoke-GenerateModuleFile {
         "New-ModuleManifest.ps1"
     )
 
-    $ps1Files = Get-ChildItem -Path $scriptRoot -Recurse -Filter *.ps1 | Where-Dictionary {
+    $ps1Files = Get-ChildItem -Path $scriptRoot -Recurse -Filter *.ps1 | Where-Object {
         ($_.Name -notin $skipFiles) -and
         ($_.Name -ne $OutputFile)
     }
